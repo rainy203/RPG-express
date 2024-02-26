@@ -117,8 +117,13 @@ io.on("connection", async (socket) => {
       const xp = getStat(completion.choices[0].message.content, "XP:");
       const hp = getStat(completion.choices[0].message.content, "HP:");
       
-
-      io.emit("initGPTMessage", JSON.parse(JSON.stringify(messageList)));
+      const anotherMessageList = await Message.find({
+        $or: [
+          { $and: [{ sender: currentUser.username }, { recipient: params }] },
+          { $and: [{ sender: params }, { recipient: currentUser.username }] },
+        ],
+      });
+      io.emit("initGPTMessage", JSON.parse(JSON.stringify(anotherMessageList)));
 
       currentConvo.content.push({
         role: newGPTMessage.role,
@@ -179,7 +184,13 @@ io.on("connection", async (socket) => {
         role: completion.choices[0].message.role,
       });
 
-      io.emit("initGPTMessage", messageList);
+      const anotherMessageList = await Message.find({
+        $or: [
+          { $and: [{ sender: currentUser.username }, { recipient: params }] },
+          { $and: [{ sender: params }, { recipient: currentUser.username }] },
+        ],
+      });
+      io.emit("initGPTMessage", JSON.parse(JSON.stringify(anotherMessageList)));
 
       currentConvo.content.push({
         role: newGPTMessage.role,
