@@ -156,6 +156,7 @@ io.on("connection", async (socket) => {
         role: newMessage.role,
         content: newMessage.content,
       });
+    
       await currentConvo.save();
 
       const completion = await openai.chat.completions.create({
