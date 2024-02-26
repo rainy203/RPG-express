@@ -185,9 +185,9 @@ io.on("connection", async (socket) => {
         role: newGPTMessage.role,
         content: newGPTMessage.content,
       });
-      currentConvo.iventory = inventory;
-      currentConvo.xp = xp;
-      currentConvo.hp = hp;
+      currentConvo.iventory = inventory || " ";
+      currentConvo.xp = xp || " ";
+      currentConvo.hp = hp || " ";
       await currentConvo.save();
       io.emit("stats", {
         inventory: currentConvo.iventory,
